@@ -1,7 +1,7 @@
 package joosakur.regexptulkki.regexp;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import joosakur.regexptulkki.queue.JavaQueue;
+import joosakur.regexptulkki.queue.Queue;
 import joosakur.regexptulkki.stack.JavaStack;
 import joosakur.regexptulkki.stack.Stack;
 
@@ -22,7 +22,7 @@ public class MyRegExpMatcher implements RegExpMatcher{
     public String infixToPostfix(String infix){
         infix = addExplicitConcatenation(infix);
         
-        Queue<Character> output = new LinkedList<Character>();
+        Queue<Character> output = new JavaQueue<Character>();
         Stack<Character> stack = new JavaStack<Character>();
         
         for (int i = 0; i < infix.length(); i++) {
@@ -48,7 +48,7 @@ public class MyRegExpMatcher implements RegExpMatcher{
     }
     
     private String addExplicitConcatenation(String expression) {
-        Queue<Character> output = new LinkedList<Character>();
+        Queue<Character> output = new JavaQueue<Character>();
         
         for (int i = 0; i < expression.length()-1; i++) {
             char currentChar = expression.charAt(i);
