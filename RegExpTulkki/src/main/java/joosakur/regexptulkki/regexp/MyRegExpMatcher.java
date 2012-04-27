@@ -11,8 +11,8 @@ public class MyRegExpMatcher implements RegExpMatcher{
     
     @Override
     public boolean matches(String regex, CharSequence input) {
-        generateNFA(infixToPostfix(regex));
-        throw new UnsupportedOperationException();
+        State startState = generateNFA(infixToPostfix(regex));
+        return match(startState, input);
     }
 
     
@@ -140,6 +140,56 @@ public class MyRegExpMatcher implements RegExpMatcher{
         Frag frag = stack.pop();
         Frag.connectFrags(frag.getOuts(), new State(State.MATCH));
         return frag.getStart();
+    }
+
+    
+    
+    boolean match(State start, CharSequence s) {
+        int listId = 1;
+        StateList clist = startList(start, listId);
+        
+        for (int i = 0; i < s.length(); i++) {
+            clist = step(clist, s.charAt(i));
+        }
+        return isMatch(clist);
+    }
+
+    private StateList startList(State start, int listId) {
+        StateList clist = new StateList(listId);
+        clist = addState(clist, start);
+        return clist;
+    }
+
+    private StateList addState(StateList stateList, State state) {
+        if(state == null || state.getLastlist() == stateList.getId())
+            return stateList;
+        state.setLastlist(stateList.getId());
+        if(state.getC() == State.SPLIT) {
+            stateList = addState(stateList, state.getOut().getState()); //out null?
+            stateList = addState(stateList, state.getOut1().getState());
+            return stateList;
+        }
+        stateList.getStates().add(state);
+        return stateList;
+    }
+
+    private StateList step(StateList clist, char c) {
+        StateList nextStates = new StateList(clist.getId()+1);
+        for (int i = 0; i < clist.getStates().size(); i++) {
+            State state = clist.getStates().get(i);
+            if(state.getC() == c){
+                clist = addState(nextStates, state.getOut().getState());
+            }
+        }
+        return nextStates;
+    }
+
+    private boolean isMatch(StateList clist) {
+        for (int i = 0; i < clist.getStates().size(); i++) {
+            if(clist.getStates().get(i).getC() == State.MATCH)
+                return true;
+        }
+        return false;
     }
     
 }
