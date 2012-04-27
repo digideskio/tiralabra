@@ -1,8 +1,8 @@
 package joosakur.regexptulkki.regexp;
 
-import joosakur.regexptulkki.queue.JavaQueue;
+import joosakur.regexptulkki.queue.MyQueue;
 import joosakur.regexptulkki.queue.Queue;
-import joosakur.regexptulkki.stack.JavaStack;
+import joosakur.regexptulkki.stack.MyStack;
 import joosakur.regexptulkki.stack.Stack;
 
 
@@ -22,8 +22,8 @@ public class MyRegExpMatcher implements RegExpMatcher{
     public String infixToPostfix(String infix){
         infix = addExplicitConcatenation(infix);
         
-        Queue<Character> output = new JavaQueue<Character>();
-        Stack<Character> stack = new JavaStack<Character>();
+        Queue<Character> output = new MyQueue<Character>();
+        Stack<Character> stack = new MyStack<Character>();
         
         for (int i = 0; i < infix.length(); i++) {
             char c = infix.charAt(i);
@@ -48,7 +48,7 @@ public class MyRegExpMatcher implements RegExpMatcher{
     }
     
     private String addExplicitConcatenation(String expression) {
-        Queue<Character> output = new JavaQueue<Character>();
+        Queue<Character> output = new MyQueue<Character>();
         
         for (int i = 0; i < expression.length()-1; i++) {
             char currentChar = expression.charAt(i);
@@ -119,74 +119,73 @@ public class MyRegExpMatcher implements RegExpMatcher{
     
     
     private State generateNFA(String postfixExpression){
-        Stack<Frag> stack = new JavaStack<Frag>();
+        Stack<Frag> fragmentStack = new MyStack<Frag>();
         for (int i = 0; i < postfixExpression.length(); i++) {
             switch (postfixExpression.charAt(i)) {
                 case '.':
-                    stack.push(new FragCatenation(stack.pop(), stack.pop()));
+                    fragmentStack.push(new FragCatenation(fragmentStack.pop(), fragmentStack.pop()));
                     break;
                 case '|':
-                    stack.push(new FragAlternation(stack.pop(), stack.pop()));
+                    fragmentStack.push(new FragAlternation(fragmentStack.pop(), fragmentStack.pop()));
                     break;
                 case '*':
-                    stack.push(new FragZeroOrMore(stack.pop()));
+                    fragmentStack.push(new FragZeroOrMore(fragmentStack.pop()));
                     break;    
                 default:
-                    stack.push(new FragLiteral(postfixExpression.charAt(i)));
+                    fragmentStack.push(new FragLiteral(postfixExpression.charAt(i)));
                     break;
             }
         }
-        
-        Frag frag = stack.pop();
+
+        Frag frag = fragmentStack.pop();
         Frag.connectFrags(frag.getOuts(), new State(State.MATCH));
         return frag.getStart();
     }
 
     
     
-    boolean match(State start, CharSequence s) {
-        int listId = 1;
-        StateList clist = startList(start, listId);
+    boolean match(State startState, CharSequence input) {
+        StateList currentStates = startList(startState);
         
-        for (int i = 0; i < s.length(); i++) {
-            clist = step(clist, s.charAt(i));
+        for (int i = 0; i < input.length(); i++) {
+            currentStates = step(currentStates, input.charAt(i));
         }
-        return isMatch(clist);
+        return isMatch(currentStates);
     }
 
-    private StateList startList(State start, int listId) {
-        StateList clist = new StateList(listId);
-        clist = addState(clist, start);
-        return clist;
+    private StateList startList(State startState) {
+        StateList states = new StateList(1);
+        states = addState(states, startState);
+        return states;
     }
 
     private StateList addState(StateList stateList, State state) {
         if(state == null || state.getLastlist() == stateList.getId())
             return stateList;
         state.setLastlist(stateList.getId());
-        if(state.getC() == State.SPLIT) {
-            stateList = addState(stateList, state.getOut().getState()); //out null?
+        if(state.getCharacter() == State.SPLIT) {
             stateList = addState(stateList, state.getOut1().getState());
+            stateList = addState(stateList, state.getOut2().getState());
             return stateList;
         }
         stateList.getStates().add(state);
         return stateList;
     }
 
-    private StateList step(StateList clist, char c) {
-        StateList nextStates = new StateList(clist.getId()+1);
-        for (int i = 0; i < clist.getStates().size(); i++) {
-            State state = clist.getStates().get(i);
-            if(state.getC() == c){
-                clist = addState(nextStates, state.getOut().getState());
+    private StateList step(StateList currentStates, char c) {
+        StateList nextStates = new StateList(currentStates.getId()+1);
+        for (int i = 0; i < currentStates.getStates().size(); i++) {
+            State state = currentStates.getStates().get(i);
+            if(state.getCharacter() == c){
+                nextStates = addState(nextStates, state.getOut1().getState());
             }
         }
         return nextStates;
     }
 
-    private boolean isMatch(StateList clist) {
-        for (int i = 0; i < clist.getStates().size(); i++) {
-            if(clist.getStates().get(i).getC() == State.MATCH)
+    private boolean isMatch(StateList stateList) {
+        for (int i = 0; i < stateList.getStates().size(); i++) {
+            if(stateList.getStates().get(i).getCharacter() == State.MATCH)
                 return true;
         }
         return false;

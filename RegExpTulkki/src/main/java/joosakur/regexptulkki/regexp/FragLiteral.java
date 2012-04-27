@@ -19,7 +19,7 @@ class FragLiteral extends Frag {
         this.setStart(state);
         
         List<Out> outs = new ArrayList<Out>();
-        outs.add(state.getOut());
+        outs.add(state.getOut1());
         this.setOuts(outs);
     }
     

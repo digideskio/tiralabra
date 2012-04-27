@@ -27,6 +27,11 @@ public class JavaStack<T> implements Stack<T> {
     public T push(T item) {
         return stack.push(item);
     }
+
+    @Override
+    public int size() {
+        return stack.size();
+    }
     
     
 

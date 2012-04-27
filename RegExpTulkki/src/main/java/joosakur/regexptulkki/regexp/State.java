@@ -1,9 +1,9 @@
 package joosakur.regexptulkki.regexp;
 
 class State {
-    private int c;
-    private Out out;
+    private int character;
     private Out out1;
+    private Out out2;
     private int lastlist;
 
     static final int SPLIT = 256;
@@ -12,23 +12,23 @@ class State {
     public State() {
     }
 
-    public State(int c) {
-        this.c = c;
+    public State(int character) {
+        this.character = character;
     }
     
-    public State(int c, Out out, Out out1) {
-        this.c = c;
-        this.out = out;
+    public State(int character, Out out1, Out out2) {
+        this.character = character;
         this.out1 = out1;
+        this.out2 = out2;
     }
 
     
-    public int getC() {
-        return c;
+    public int getCharacter() {
+        return character;
     }
 
-    public void setC(int c) {
-        this.c = c;
+    public void setCharacter(int character) {
+        this.character = character;
     }
 
     public int getLastlist() {
@@ -39,20 +39,20 @@ class State {
         this.lastlist = lastlist;
     }
 
-    public Out getOut() {
-        return out;
-    }
-
-    public void setOut(Out out) {
-        this.out = out;
-    }
-
     public Out getOut1() {
         return out1;
     }
 
     public void setOut1(Out out1) {
         this.out1 = out1;
+    }
+
+    public Out getOut2() {
+        return out2;
+    }
+
+    public void setOut2(Out out2) {
+        this.out2 = out2;
     }
 
     

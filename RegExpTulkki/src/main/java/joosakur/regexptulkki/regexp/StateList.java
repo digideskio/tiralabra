@@ -1,14 +1,14 @@
 package joosakur.regexptulkki.regexp;
 
-import joosakur.regexptulkki.list.JavaList;
 import joosakur.regexptulkki.list.List;
+import joosakur.regexptulkki.list.MyList;
 
 public class StateList {
     List<State> states;
     int id;
 
     public StateList(int id) {
-        this.states = new JavaList<State>();
+        this.states = new MyList<State>();
         this.id = id;
     }
 

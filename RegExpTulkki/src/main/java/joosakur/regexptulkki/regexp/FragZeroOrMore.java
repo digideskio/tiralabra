@@ -17,7 +17,7 @@ class FragZeroOrMore extends Frag {
         State state = new State(State.SPLIT, new Out(frag.getStart()), new Out());
         connectFrags(frag.getOuts(), state);
         List<Out> outs = new ArrayList<Out>();
-        outs.add(state.getOut1());
+        outs.add(state.getOut2());
         this.setStart(state);
         this.setOuts(outs);
     }
