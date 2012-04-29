@@ -46,5 +46,12 @@ public class MyList<T> implements List<T> {
         capacity *= 2;
     }
 
-    
+    @Override
+    public boolean addAll(List<T> items) {
+        for (int i = 0; i < items.size(); i++) {
+            this.add(items.get(i));
+        }
+        return true;
+    }
+
 }

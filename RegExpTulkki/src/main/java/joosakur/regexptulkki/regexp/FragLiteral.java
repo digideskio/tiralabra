@@ -1,8 +1,8 @@
 package joosakur.regexptulkki.regexp;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import joosakur.regexptulkki.list.List;
+import joosakur.regexptulkki.list.MyList;
+
 
 class FragLiteral extends Frag {
     
@@ -18,7 +18,7 @@ class FragLiteral extends Frag {
         State state = new State(character, new Out(), null);
         this.setStart(state);
         
-        List<Out> outs = new ArrayList<Out>();
+        List<Out> outs = new MyList<Out>();
         outs.add(state.getOut1());
         this.setOuts(outs);
     }

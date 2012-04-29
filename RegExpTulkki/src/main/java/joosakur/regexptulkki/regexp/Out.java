@@ -1,7 +1,13 @@
 package joosakur.regexptulkki.regexp;
 
-
+/**
+ * 
+ * Etenemispolku seuraavaan tilaan.
+ */
 class Out {
+    /**
+     * Seuraava tila.
+     */
     private State state;
 
     public Out() {

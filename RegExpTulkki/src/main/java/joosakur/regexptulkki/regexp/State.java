@@ -1,12 +1,33 @@
 package joosakur.regexptulkki.regexp;
 
+/**
+ * Tila Finite Automata algoritmissa.
+ */
 class State {
+    /**
+     * Merkki tai tila.
+     */
     private int character;
+    /**
+     * Polku seuraavaan tilaan
+     */
     private Out out1;
+    /**
+     * Polku seuraavaan tilaan
+     */
     private Out out2;
+    /**
+     * Tilalistan (StateList) id, jolla varmistetaan ettei samaa tilaa (State) lisätä listalle kahdesti
+     */
     private int lastlist;
 
+    /**
+     * Alternaatiota kuvaava tila.
+     */
     static final int SPLIT = 256;
+    /**
+     * Lopputila.
+     */
     static final int MATCH = 257;
 
     public State() {

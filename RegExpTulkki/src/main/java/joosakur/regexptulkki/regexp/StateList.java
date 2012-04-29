@@ -3,7 +3,11 @@ package joosakur.regexptulkki.regexp;
 import joosakur.regexptulkki.list.List;
 import joosakur.regexptulkki.list.MyList;
 
-public class StateList {
+/**
+ * 
+ * ID:llä varustettu Lista NFA-algoritmin tiloista.
+ */
+class StateList {
     List<State> states;
     int id;
 

@@ -1,7 +1,8 @@
 package joosakur.regexptulkki.regexp;
 
-import java.util.ArrayList;
-import java.util.List;
+import joosakur.regexptulkki.list.List;
+import joosakur.regexptulkki.list.MyList;
+
 
 class FragZeroOrMore extends Frag {
     
@@ -16,7 +17,7 @@ class FragZeroOrMore extends Frag {
     public FragZeroOrMore(Frag frag) {
         State state = new State(State.SPLIT, new Out(frag.getStart()), new Out());
         connectFrags(frag.getOuts(), state);
-        List<Out> outs = new ArrayList<Out>();
+        List<Out> outs = new MyList<Out>();
         outs.add(state.getOut2());
         this.setStart(state);
         this.setOuts(outs);

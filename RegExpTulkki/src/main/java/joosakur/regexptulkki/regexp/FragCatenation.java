@@ -1,6 +1,7 @@
 package joosakur.regexptulkki.regexp;
 
-import java.util.List;
+import joosakur.regexptulkki.list.List;
+
 
 class FragCatenation extends Frag {
     

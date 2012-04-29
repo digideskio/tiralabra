@@ -30,5 +30,13 @@ public class JavaList<T> implements List<T> {
     public int size() {
         return list.size();
     }
+
+    @Override
+    public boolean addAll(List<T> items) {
+        for (int i = 0; i < items.size(); i++) {
+            this.add(items.get(i));
+        }
+        return true;
+    }
     
 }
